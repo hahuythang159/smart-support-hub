@@ -15,6 +15,29 @@ export const createTicket = async (req: AuthenticatedRequest, res: Response) => 
     }
 };
 
+export const getTickets = async (req: AuthenticatedRequest, res: Response) => {
+    const { status, requesterId, assigneeId, page = 1, limit = 20 } = req.query as any;
+    const filter: any = {};
+    if (status) filter.status = status;
+    if (requesterId) filter.requesterId = requesterId;
+    if (assigneeId) filter.assigneeId = assigneeId;
+
+    // Basic RBAC: users only see their tickets unless staff
+    if (req.user?.role !== 'staff' && req.user?.role !== 'admin') {
+        filter.requesterId = req.user?.id;
+    }
+
+    try {
+        const tickets = await Ticket.find(filter)
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(Number(limit));
+        res.json(tickets);
+    } catch (err) {
+        res.status(500).json({ message: 'Get tickets failed', error: err });
+    }
+};
+
 export const getTicketById = async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
