@@ -12,4 +12,5 @@ export interface ITicket extends Document {
     messages: IMessage[];
     createdAt: Date;
     updatedAt: Date;
+    [key: string]: any;
 }
