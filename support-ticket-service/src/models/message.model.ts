@@ -3,7 +3,7 @@ import { IMessage } from "../interfaces/message.interface";
 
 export const MessageSchema = new Schema<IMessage>({
     authorId: { type: Schema.Types.ObjectId, required: true },
-    authorRole: { type: String, enum: ['user', 'staff', 'system'], required: true },
+    authorRole: { type: String, enum: ['user', 'staff', 'admin'], required: true },
     content: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
 });

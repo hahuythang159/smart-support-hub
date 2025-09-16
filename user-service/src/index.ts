@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import cors from 'cors';
+import { createInitialUsers } from './services/createInitialUsers';
 
 dotenv.config();
 const app = express();
@@ -12,10 +13,11 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT!;
 mongoose
   .connect(process.env.MONGO_URI || '')
   .then(() => {
+    createInitialUsers()
     app.listen(PORT, () => console.log(`User Service running on ${PORT}`));
   })
   .catch(err => console.error(err));
