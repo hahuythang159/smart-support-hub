@@ -12,9 +12,21 @@ export type LoginResponse = {
     token: string;
 }
 
+export type UserRole = 'user' | 'staff' | 'admin' | null;
+
 export type AuthState = {
     token: string | null;
     isAuthenticated: boolean;
+    userId: string | null;
+    role: UserRole;
+    loading: boolean;
+    error: string | null;
+}
+
+export type DecodedToken = {
+    id: string;
+    role: UserRole;
+    exp: number;
 }
 
 export type AuthLayoutProps = {

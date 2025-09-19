@@ -2,16 +2,19 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAppSelector, useAppDispatch } from "@/store/store";
-import { loadToken } from "@/store/authSlice";
+import { loginSuccess } from "@/store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export default function Home() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch()
+  const { isAuthenticated, token } = useSelector((state: RootState) => state.auth)
 
   useEffect(() => {
-    dispatch(loadToken());
+    if (token) {
+      dispatch(loginSuccess({ token }));
+    }
   }, [dispatch]);
 
   useEffect(() => {
