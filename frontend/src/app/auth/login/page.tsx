@@ -1,20 +1,15 @@
 "use client"
 
 import AuthLayout from "@/app/auth/layout";
-import { login } from "@/services/auth.service";
-import { loginSuccess } from "@/store/authSlice";
+import { useLogin } from "@/hooks/useLogin";
 import { LoginForm } from "@/types";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 export default function LoginPage() {
   const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
   const [stayLoggedIn, setStayLoggedIn] = useState<boolean>(false)
-  const [error, setLocalError] = useState<string | null>(null)
 
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const { error, loading, handleLogin } = useLogin()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -24,26 +19,9 @@ export default function LoginPage() {
     setStayLoggedIn(e.target.checked)
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setLocalError(null)
-
-    try {
-      const data = await login(form);
-
-      if (typeof window !== "undefined") {
-        if (stayLoggedIn) {
-          localStorage.setItem('token', data.token)
-        } else {
-          sessionStorage.setItem('token', data.token)
-        }
-      }
-
-      dispatch(loginSuccess({ token: data.token }))
-      router.push("/")
-    } catch (err: any) {
-      setLocalError(err.message || 'An error occurred. Please try again.')
-    }
+    handleLogin(form, stayLoggedIn)
   };
 
   return (
@@ -61,7 +39,7 @@ export default function LoginPage() {
           <input type="checkbox" checked={stayLoggedIn} onChange={handleCheckBoxChange} />
           <span style={{ marginRight: 8 }}>Remember me</span>
         </label>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
       </form>
     </AuthLayout>
   );
