@@ -1,0 +1,62 @@
+services:
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./user-service/.env
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    restart: always
+
+  support-ticket-service:
+    build:
+      context: ./support-ticket-service
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./support-ticket-service/.env
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - user-service
+    networks:
+      - app-network
+    restart: always
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "3001:3001"
+    environment:
+      USER_SERVICE_URL: "http://user-service:4000"
+      TICKET_SERVICE_URL: "http://support-ticket-service:4001"
+    depends_on:
+      - support-ticket-service
+      - user-service
+    networks:
+      - app-network
+    restart: always
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
