@@ -1,0 +1,39 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push user-service
+        run: |
+          docker build -t $DOCKERHUB_USERNAME/user-service:latest ./user-service
+          docker push $DOCKERHUB_USERNAME/user-service:latest
+
+      - name: Build and push support-ticket-service
+        run: |
+          docker build -t $DOCKERHUB_USERNAME/support-ticket-service:latest ./support-ticket-service
+          docker push $DOCKERHUB_USERNAME/support-ticket-service:latest
+
+      - name: Build and push api-gateway
+        run: |
+          docker build -t $DOCKERHUB_USERNAME/api-gateway:latest ./api-gateway
+          docker push $DOCKERHUB_USERNAME/api-gateway:latest
