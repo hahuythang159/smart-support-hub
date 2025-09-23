@@ -2,10 +2,11 @@ import { API_BASE } from "./baseURL";
 
 export async function apiRequest(path: string, options: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
     headers: {
       "Content-Type": "application/json",
+      ...(options.headers || {}),
     },
-    ...options,
   });
 
   let errorBody: any = null;
