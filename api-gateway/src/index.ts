@@ -14,7 +14,7 @@ app.use(cors());
 // Proxy route
 app.use('/auth', authProxy);
 
-app.use('/auth', ticketProxy);
+app.use('/ticket', ticketProxy);
 
 
 app.listen(PORT, () => {
