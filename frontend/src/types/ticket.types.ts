@@ -1,7 +1,7 @@
 export type Message = {
     _id?: string;
     authorId: string;
-    authorRole: 'user' | 'staff' | 'system';
+    authorRole: 'user' | 'staff' | 'admin';
     content: string;
     createdAt: string;
 }
@@ -22,7 +22,6 @@ export type Ticket = {
     updatedAt: string;
 }
 
-
 export type TicketCardProps = {
     ticket: Ticket;
     role: 'user' | 'staff' | 'admin';
@@ -40,3 +39,11 @@ export type TicketGetResponse = Ticket;
 export type TicketCreateMessageRequest = {
     content: string;
 }
+
+export type UseTicketDetailProps = {
+    id: string;
+    token: string | null;
+}
+
+export type OnMessageAdded = (message: Message) => void;
+
