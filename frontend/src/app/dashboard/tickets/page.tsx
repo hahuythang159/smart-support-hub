@@ -2,11 +2,17 @@
 
 import TicketCard from '@/components/ticket/TicketCard';
 import TicketForm from '@/components/ticket/TicketForm';
+import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 import { useTickets } from '@/hooks/useTickets';
 
 const TicketsPage = () => {
     const { tickets, userRole, error, loading, handleTicketCreated } = useTickets()
-  
+    const { hasAccess } = useProtectedRoute(['admin', 'staff'])
+
+    if (!hasAccess) {
+        return null
+    }
+
     return (
         <div className="space-y-6">
             <TicketForm onTicketCreated={handleTicketCreated} />
