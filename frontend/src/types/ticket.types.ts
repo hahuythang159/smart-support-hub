@@ -47,3 +47,8 @@ export type UseTicketDetailProps = {
 
 export type OnMessageAdded = (message: Message) => void;
 
+export type TicketUpdateRequest = {
+    status: 'open' | 'closed' | 'resolved' | 'pending';
+    priority: 'low' | 'medium' | 'high';
+}
+
