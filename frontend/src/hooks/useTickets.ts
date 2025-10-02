@@ -25,15 +25,19 @@ export const useTickets = () => {
         try {
             const data = await getTicketsService(token)
             setTickets(data)
-        } catch (err: any) {
-            setError(err.message || 'An error occurred. Please try again!')
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('An unknown error occurred. Please try again!')
+            }
         } finally {
             setLoading(false)
         }
     }
 
     const handleTicketCreated = (newTicket: Ticket) => {
-        setTickets((prewTickets) => [...prewTickets, newTicket])
+        setTickets((prevTickets) => [...prevTickets, newTicket])
     }
 
     return { tickets, userRole, error, loading, handleTicketCreated }

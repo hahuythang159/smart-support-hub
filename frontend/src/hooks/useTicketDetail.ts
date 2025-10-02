@@ -18,8 +18,12 @@ export const useTicketDetail = (id: string, token: string) => {
             try {
                 const data = await getTicketByIdService(id as string, token!);
                 setTicket(data);
-            } catch (err: any) {
-                setError(err.message || 'An error occurred');
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An unknown error occurred. Please try again!')
+                }
             } finally {
                 setLoading(false);
             }

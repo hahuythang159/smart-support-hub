@@ -39,6 +39,7 @@ const authSlice = createSlice({
       state.role = null;
       state.isAuthenticated = false;
       localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
     },
 
     setLoading: (state, action: PayloadAction<boolean>) => {

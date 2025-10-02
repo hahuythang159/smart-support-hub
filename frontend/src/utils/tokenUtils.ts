@@ -20,7 +20,7 @@ export const getDecodedToken = (token: string | null): DecodedToken | null => {
     if (token && typeof token === 'string' && token.split('.').length === 3) {
         try {
             return jwtDecode<DecodedToken>(token);
-        } catch (error) {
+        } catch {
             return null;
         }
     }

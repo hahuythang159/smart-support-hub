@@ -30,7 +30,7 @@ export type DecodedToken = {
 }
 
 export type AuthLayoutProps = {
-    title: string;
+    title?: string;
     children: React.ReactNode;
     footerText?: string;
     footerLinkText?: string;

@@ -9,19 +9,19 @@ export async function apiRequest(path: string, options: RequestInit) {
     },
   });
 
-  let errorBody: any = null;
+  let errorBody: ErrorResponse | null = null;
 
   if (!res.ok) {
     try {
       errorBody = await res.json();
-    } catch (parseErr) {
+    } catch {
       // Failed to parse JSON from backend
       throw new Error(`HTTP ${res.status} - ${res.statusText}`);
     }
 
     // Prioritize error from `errors` array, then `message`, fallback to HTTP status
     const errorMessage =
-      errorBody?.errors?.map((err: any) => err.msg).join(", ") ||
+      errorBody?.errors?.map((err) => err.msg).join(", ") ||
       errorBody?.message ||
       `HTTP ${res.status} - ${res.statusText}`;
 
@@ -31,7 +31,8 @@ export async function apiRequest(path: string, options: RequestInit) {
   // Try to parse and return JSON response
   try {
     return await res.json();
-  } catch (jsonErr) {
+  } catch {
+    // Bỏ biến jsonErr không dùng
     throw new Error("Failed to parse response data.");
   }
 }

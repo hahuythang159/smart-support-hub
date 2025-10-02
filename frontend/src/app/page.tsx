@@ -15,7 +15,7 @@ export default function Home() {
     if (token) {
       dispatch(loginSuccess({ token }));
     }
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (!isAuthenticated) {
