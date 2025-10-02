@@ -17,7 +17,10 @@ const PORT = process.env.PORT || 4000;
 mongoose
   .connect(process.env.MONGO_URI || '')
   .then(() => {
-    createInitialUsers()
-    app.listen(PORT, () => console.log(`User Service running on ${PORT}`));
+    console.log('MongoDB connected successfully');
+    createInitialUsers();
+    app.listen(PORT, () => console.log(`User Service running on port ${PORT}`));
   })
-  .catch(err => console.error(err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+  });

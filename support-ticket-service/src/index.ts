@@ -22,6 +22,9 @@ app.use('/ticket',authMiddleware, ticketRoutes);
 mongoose
   .connect(process.env.MONGO_URI || '')
   .then(() => {
-    app.listen(PORT, () => console.log(`User Service running on ${PORT}`));
+    console.log('MongoDB connected successfully');
+    app.listen(PORT, () => console.log(`Support Ticket Service running on port ${PORT}`));
   })
-  .catch(err => console.error(err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+  });
