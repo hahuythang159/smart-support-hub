@@ -29,8 +29,12 @@ export const useNewMessageForm = ({ ticketId, token, onAdded }: NewMessageFormPr
             setForm({ content: '' });
             const newMessage = res.messages[res.messages.length - 1];
             onAdded?.(newMessage);
-        } catch (err: any) {
-            setError(err?.message || 'Failed to send message');
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('Failed to send message')
+            }
         } finally {
             setLoading(false);
         }

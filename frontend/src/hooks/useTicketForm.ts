@@ -40,8 +40,12 @@ export const useTicketForm = ({ onTicketCreated }: TicketFormProps) => {
             const data = await createTicketService(form, token)
             setForm({ title: '', description: '', priority: 'medium', tags: [] })
             onTicketCreated(data)
-        } catch (err: any) {
-            setError(err.messages || 'An error occurred. Please try again.')
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('An unknown error occurred. Please try again!')
+            }
         } finally {
             setLoading(false)
         }

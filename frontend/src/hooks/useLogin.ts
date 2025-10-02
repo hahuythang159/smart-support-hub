@@ -22,8 +22,12 @@ export const useLogin = () => {
 
             dispatch(loginSuccess({ token: data.token }))
             router.push('/')
-        } catch (err: any) {
-            setError(err.message || 'An error occurred. Please try again.')
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('An unknown error occurred. Please try again!')
+            }
         } finally {
             setLoading(false)
         }

@@ -20,8 +20,12 @@ export const useTicketsSettings = () => {
             try {
                 const data = await getTicketsService(token);
                 setTickets(data);
-            } catch (err: any) {
-                setError(err.message || 'Failed to load tickets');
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('Failed to load tickets')
+                }
             } finally {
                 setLoading(false);
             }
@@ -38,8 +42,12 @@ export const useTicketsSettings = () => {
         try {
             const updatedTicket = await updateTicketService(ticketId, token, updates);
             setTickets(prev => prev.map(t => (t._id === ticketId ? updatedTicket : t)));
-        } catch (err: any) {
-            setError(err.message || 'Update failed');
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('Update failed')
+            }
         } finally {
             setLoading(false);
         }

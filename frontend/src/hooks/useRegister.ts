@@ -14,8 +14,12 @@ export const useRegister = () => {
         try {
             await registerService(form)
             router.push('/auth/login')
-        } catch (err: any) {
-            setError(err.message || 'An error occurred. Please try again.')
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError('An unknown error occurred. Please try again!')
+            }
         } finally {
             setLoading(false)
         }
