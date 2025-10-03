@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { loginSuccess } from "@/store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import Topbar from "@/components/layout/Topbar";
 
 export default function Home() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function Home() {
 
   return (
     <div>
+      <Topbar />
       <h1>Welcome to Smart Support Hub</h1>
     </div>
   );

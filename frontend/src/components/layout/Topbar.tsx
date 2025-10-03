@@ -1,11 +1,11 @@
 "use client";
 
 import { AppBar, Toolbar, Typography, IconButton, Box, Avatar, Tooltip, Menu, MenuItem, Divider, ListItemIcon, Grow } from "@mui/material";
-import { Notifications, Settings, Logout } from "@mui/icons-material";
+import { Notifications } from "@mui/icons-material";
 import { useTopbar } from "@/hooks/useTopbar";
 
 export default function Topbar() {
-    const { anchorEl, open, handleLogout, handleOpenMenu, handleCloseMenu, handleProfileClick, handleSettingsClick, handleNotificationClick } = useTopbar();
+    const { items, anchorEl, open, handleOpenMenu, handleCloseMenu, handleNotificationClick } = useTopbar();
 
     return (
         <AppBar position="fixed" color="default" elevation={0}
@@ -18,7 +18,7 @@ export default function Topbar() {
         >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="h6" fontWeight="bold" noWrap>
-                    Dashboard
+                    Smart Support
                 </Typography>
 
                 <Box display="flex" alignItems="center" gap={2}>
@@ -46,22 +46,17 @@ export default function Topbar() {
                         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                         keepMounted
                     >
-                        <MenuItem onClick={() => { handleProfileClick(); handleCloseMenu(); }}>
-                            <Avatar sx={{ width: 24, height: 24, mr: 1 }} /> Profile
-                        </MenuItem>
-                        <MenuItem onClick={() => { handleSettingsClick(); handleCloseMenu(); }}>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Settings
-                        </MenuItem>
-                        <Divider />
-                        <MenuItem onClick={() => { handleLogout(); handleCloseMenu(); }}>
-                            <ListItemIcon>
-                                <Logout fontSize="small" />
-                            </ListItemIcon>
-                            Logout
-                        </MenuItem>
+                        {items.map((item) => (
+                            <div key={item.label}>
+                                <MenuItem onClick={() => { item.onClick(); handleCloseMenu() }}>
+                                    {item.icon && (
+                                        <ListItemIcon>{item.icon}</ListItemIcon>
+                                    )}
+                                    {item.label}
+                                </MenuItem>
+                                {item.dividerAfter && <Divider />}
+                            </div>
+                        ))}
                     </Menu>
                 </Box>
             </Toolbar>

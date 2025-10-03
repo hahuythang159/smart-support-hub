@@ -1,3 +1,4 @@
+import { ErrorResponse } from "@/interfaces/errorResponse.interfaces";
 import { API_BASE } from "./baseURL";
 
 export async function apiRequest(path: string, options: RequestInit) {

@@ -1,13 +1,16 @@
 import { useState, MouseEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/store/store";
+import { getMenuItems } from "@/configs/topbarMenuConfig";
 
 export const useTopbar = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const dispatch = useDispatch();
     const router = useRouter();
+    const role = useSelector((state: RootState) => state.auth.role)
 
     const handleLogout = () => {
         dispatch(logout());
@@ -34,5 +37,11 @@ export const useTopbar = () => {
         // TODO: Implement notification panel toggle or redirect to notifications page
     };
 
-    return { anchorEl, open, handleLogout, handleOpenMenu, handleCloseMenu, handleProfileClick, handleSettingsClick, handleNotificationClick };
+    const handleDashboardClick = () => {
+        router.push('/dashboard/tickets')
+    }
+
+    const items = getMenuItems({ onProfile: handleProfileClick, onSettings: handleSettingsClick, onDashboard: handleDashboardClick, onLogout: handleLogout }, role)
+
+    return { items, anchorEl, open, handleOpenMenu, handleCloseMenu, handleNotificationClick };
 };
