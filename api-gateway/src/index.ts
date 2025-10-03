@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authProxy from './routes/auth.route';
 import ticketProxy from './routes/ticket.route';
+import usersProxy from './routes/users.route';
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ app.use('/auth', authProxy);
 
 app.use('/ticket', ticketProxy);
 
+app.use('/users', usersProxy);
 
 app.listen(PORT, () => {
   console.log(`API Gateway is running at on ${PORT}`);
