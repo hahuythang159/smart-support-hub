@@ -50,3 +50,11 @@ export const deleteTicketService = async (ticketId: string, token: string): Prom
         method: 'DELETE'
     })
 }
+
+export const getTicketsByUser = async (token: string, userId: string): Promise<Tickets> => {
+    const response = await apiRequest(`/tickets/?requesterId=${userId}`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer: ${token}` }
+    })
+    return response
+}
