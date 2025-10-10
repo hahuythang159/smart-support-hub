@@ -9,3 +9,8 @@ export const validateLogin = [
   body('email').trim().notEmpty().withMessage('Email is required'),
   body('password').trim().notEmpty().withMessage('Password is required'),
 ];
+
+export const validateChangePassword = [
+  body('currentPassword').trim().notEmpty().withMessage('Your current password is required'),
+  body('newPassword').trim().notEmpty().withMessage('New password is required')
+]
