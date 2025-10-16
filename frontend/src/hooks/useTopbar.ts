@@ -26,7 +26,7 @@ export const useTopbar = () => {
     };
 
     const handleProfileClick = () => {
-        // TODO: Implement navigation to user profile page
+        router.push('/users/me')
     };
 
     const handleSettingsClick = () => {
