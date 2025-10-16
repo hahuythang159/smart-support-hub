@@ -1,7 +1,6 @@
 import User from '../models/user.model';
 import { AuthenticatedRequest } from '../interfaces/authenticated-request.interface';
 import { Response } from 'express';
-import bcrypt from 'bcrypt';
 import { comparePassword, hashPassword } from '../utils/hash';
 
 export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
@@ -44,5 +43,23 @@ export const changePassword = async (req: AuthenticatedRequest, res: Response) =
         return res.status(200).json({ message: 'Password changed successfully.' })
     } catch (err) {
         res.status(500).json({ message: 'Failed to change password.', error: err })
+    }
+}
+
+export const getMyProfile = async (req: AuthenticatedRequest, res: Response): Promise<Response> => {
+    try {
+        const userId = req.user?.id
+        if (!userId) {
+            return res.status(401).json({ message: 'Unauthorized: No user ID found in token' });
+        }
+
+        const user = await User.findById(userId).select('-password')
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        return res.status(200).json(user)
+    } catch (err) {
+        return res.status(500).json({ message: 'Failed to fetch user profile.', error: err });
     }
 }
