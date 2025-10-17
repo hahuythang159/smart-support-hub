@@ -5,14 +5,13 @@ import { STATUS_OPTIONS, PRIORITY_OPTIONS, StatusType, PriorityType } from '@/co
 import { TicketSettingsListProps } from '@/interfaces/ticket.interfaces';
 import { useTicketSettingsHandlers } from '@/hooks/useTicketSettingsHandlers';
 
-export default function TicketSettingsList({ tickets, loading, error, userRole, onUpdate }: TicketSettingsListProps) {
+export default function TicketSettingsList({ tickets, loading, userRole, onUpdate }: TicketSettingsListProps) {
 
   const { isStaff, handleStatusChange, handlePriorityChange } = useTicketSettingsHandlers({ userRole: userRole ?? '', onUpdate });
 
   return (
     <div>
       {loading && <p>Loading tickets...</p>}
-      {error && <p className="text-red-500">{error}</p>}
       <table className="w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr>

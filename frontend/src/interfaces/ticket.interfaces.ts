@@ -14,7 +14,6 @@ export interface NewMessageFormProps {
 export interface TicketSettingsListProps {
     tickets: Tickets;
     loading: boolean;
-    error: string | null;
     userRole: UserRole;
     onUpdate: (ticketId: string, updates: TicketUpdateRequest) => void;
 }

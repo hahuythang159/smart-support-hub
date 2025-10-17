@@ -1,28 +1,29 @@
 'use client'
 
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { useTicketsSettings } from '@/hooks/useTicketsSettings';
 import TicketSettingsList from '@/components/ticket/TicketSettingsList';
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 
 const SettingsPage = () => {
-    const { tickets, loading, error, updateTicket } = useTicketsSettings();
+    const { token, role } = useSelector((state: RootState) => state.auth)
     const { hasAccess } = useProtectedRoute(['admin', 'staff'])
-    const role = useSelector((state: RootState) => state.auth.role)
 
-    if (!hasAccess) {
-        return null
-    }
+    const { tickets, loading, fetchError, updateError, updateTicket } = useTicketsSettings(token)
+
+    if (!hasAccess) return null
 
     return (
         <main>
             <h1>Settings - Tickets</h1>
+            {fetchError && <p style={{ color: 'red' }}>{fetchError}</p>}
+            {updateError && <p style={{ color: 'red' }}>{updateError}</p>}
+
             <TicketSettingsList
                 tickets={tickets}
                 loading={loading}
-                error={error}
                 userRole={role}
                 onUpdate={updateTicket}
             />

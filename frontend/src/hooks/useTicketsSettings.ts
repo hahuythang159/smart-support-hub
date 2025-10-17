@@ -1,61 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
-import { getTicketsService, updateTicketService } from '@/services/ticket.service';
-import { Ticket, TicketUpdateRequest, Tickets } from '@/types';
+import { useFetchTickets } from './useFetchTickets';
+import { useUpdateTicket } from './useUpdateTicket';
+import { TicketUpdateRequest } from '@/types';
 
-export const useTicketsSettings = () => {
-    const [tickets, setTickets] = useState<Tickets>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+export const useTicketsSettings = (token: string | null) => {
+    const { tickets, loading: fetchLoading, error: fetchError, refetch, setTickets } = useFetchTickets(token)
 
-    const { token } = useSelector((state: RootState) => state.auth);
-
-    useEffect(() => {
-        if (!token) return;
-
-        const loadTickets = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const data = await getTicketsService(token);
-                setTickets(data);
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message)
-                } else {
-                    setError('Failed to load tickets')
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadTickets();
-    }, [token]);
+    const { updateTicket: updateTicketAPI, loading: updateLoading, error: updateError } = useUpdateTicket(token)
 
     const updateTicket = async (ticketId: string, updates: TicketUpdateRequest) => {
-        if (!token) return;
-        setLoading(true);
-        setError(null);
-
-        try {
-            const updatedTicket = await updateTicketService(ticketId, token, updates);
-            setTickets(prev => prev.map(t => (t._id === ticketId ? updatedTicket : t)));
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message)
-            } else {
-                setError('Update failed')
-            }
-        } finally {
-            setLoading(false);
+        const updated = await updateTicketAPI(ticketId, updates)
+        if (updated) {
+            setTickets(prev => prev.map(t => (t._id === ticketId ? updated : t)))
         }
-    };
+    }
 
-    const handleTicketCreated = (newTicket: Ticket) => {
-        setTickets(prev => [...prev, newTicket]);
+    return {
+        tickets,
+        loading: fetchLoading || updateLoading,
+        fetchError,
+        updateError,
+        updateTicket,
+        refetch
     };
-
-    return { tickets, loading, error, updateTicket, handleTicketCreated };
 };
