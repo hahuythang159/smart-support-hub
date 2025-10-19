@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getTicketsService } from '@/services/ticket.service';
 import { Tickets } from '@/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
-export const useFetchTickets = (token: string | null) => {
+export const useFetchTickets = () => {
     const [tickets, setTickets] = useState<Tickets>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    const token = useSelector((state: RootState) => state.auth.token)
 
     const fetchTickets = useCallback(async () => {
         if (!token) return

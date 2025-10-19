@@ -5,9 +5,9 @@ import { STATUS_OPTIONS, PRIORITY_OPTIONS, StatusType, PriorityType } from '@/co
 import { TicketSettingsListProps } from '@/interfaces/ticket.interfaces';
 import { useTicketSettingsHandlers } from '@/hooks/useTicketSettingsHandlers';
 
-export default function TicketSettingsList({ tickets, loading, userRole, onUpdate }: TicketSettingsListProps) {
+export default function TicketSettingsList({ tickets, loading, onUpdate }: TicketSettingsListProps) {
 
-  const { isStaff, handleStatusChange, handlePriorityChange } = useTicketSettingsHandlers({ userRole: userRole ?? '', onUpdate });
+  const { isStaff, handleStatusChange, handlePriorityChange } = useTicketSettingsHandlers({ onUpdate });
 
   return (
     <div>

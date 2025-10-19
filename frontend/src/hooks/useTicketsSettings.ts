@@ -2,10 +2,10 @@ import { useFetchTickets } from './useFetchTickets';
 import { useUpdateTicket } from './useUpdateTicket';
 import { TicketUpdateRequest } from '@/types';
 
-export const useTicketsSettings = (token: string | null) => {
-    const { tickets, loading: fetchLoading, error: fetchError, refetch, setTickets } = useFetchTickets(token)
+export const useTicketsSettings = () => {
+    const { tickets, loading: fetchLoading, error: fetchError, refetch, setTickets } = useFetchTickets()
 
-    const { updateTicket: updateTicketAPI, loading: updateLoading, error: updateError } = useUpdateTicket(token)
+    const { updateTicket: updateTicketAPI, loading: updateLoading, error: updateError } = useUpdateTicket()
 
     const updateTicket = async (ticketId: string, updates: TicketUpdateRequest) => {
         const updated = await updateTicketAPI(ticketId, updates)

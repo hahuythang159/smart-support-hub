@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { updateTicketService } from '@/services/ticket.service';
 import { TicketUpdateRequest, Ticket } from '@/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
-export const useUpdateTicket = (token: string | null) => {
+export const useUpdateTicket = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    const token = useSelector((state: RootState) => state.auth.token)
 
     const updateTicket = async (ticketId: string, updates: TicketUpdateRequest): Promise<Ticket | null> => {
         if (!token) return null
