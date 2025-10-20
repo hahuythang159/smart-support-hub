@@ -1,9 +1,8 @@
 'use client'
 
 import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
-import { ProfileInfo } from "@/components/profile/ProfileInfo";
+import ProfileInfo from "@/components/profile/ProfileInfo";
 import useMyProfile from "@/hooks/useMyProfile"
-import { formatDate } from "@/utils/formatDate";
 
 const ProfilePage = () => {
     const { myProfile, error, loading } = useMyProfile()

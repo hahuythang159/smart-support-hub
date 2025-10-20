@@ -2,8 +2,8 @@ import { User } from "@/types"
 import { formatDate } from "@/utils/formatDate"
 import React from "react"
 
-export const ProfileInfo = React.memo(({ profile }: { profile: User | null }) => {
-    if (!profile) return null
+const ProfileInfo = ({ profile }: { profile: User | null }) => {
+    if (!profile) return null;
 
     return (
         <ul>
@@ -12,4 +12,7 @@ export const ProfileInfo = React.memo(({ profile }: { profile: User | null }) =>
             <small>Updated: {formatDate(profile.updatedAt)}</small>
         </ul>
     )
-})
+}
+
+export default React.memo(ProfileInfo)
+
