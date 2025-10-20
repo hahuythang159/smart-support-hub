@@ -9,3 +9,8 @@ export type User = {
 }
 
 export type Users = User[]
+
+export type ChangePasswordRequest = {
+    currentPassword: string;
+    newPassword: string;
+}

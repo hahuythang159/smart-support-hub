@@ -1,5 +1,7 @@
 'use client'
 
+import ChangePasswordForm from "@/components/profile/ChangePasswordForm";
+import { ProfileInfo } from "@/components/profile/ProfileInfo";
 import useMyProfile from "@/hooks/useMyProfile"
 import { formatDate } from "@/utils/formatDate";
 
@@ -9,20 +11,9 @@ const ProfilePage = () => {
     return (
         <div>
             {error && (<h3>{error}</h3>)}
-            {loading
-                ? <p>Loading profile data.....</p>
-                : (
-                    <ul>
-                        <h2>{myProfile?.email}</h2>
-                        <small>
-                            Created: {myProfile?.createdAt ? formatDate(myProfile?.createdAt) : 'N/A'}
-                        </small>
-                        <small>
-                            Updated: {myProfile?.updatedAt ? formatDate(myProfile.updatedAt) : 'N/A'}
-                        </small>
-                    </ul>
-                )
-            }
+            {!loading && <ProfileInfo profile={myProfile} />}
+
+            <ChangePasswordForm />
         </div>
     );
 }

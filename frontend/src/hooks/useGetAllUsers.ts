@@ -9,8 +9,6 @@ const useGetAllUsers = () => {
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const token = useSelector((state: RootState) => state.auth.token)
-    console.log(token);
-
 
     useEffect(() => {
         if (token) {
